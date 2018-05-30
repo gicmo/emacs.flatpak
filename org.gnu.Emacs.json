@@ -12,8 +12,10 @@
 	"--socket=wayland",
 	"--share=network",
 	"--share=ipc",
+	"--socket=pulseaudio",
 	"--filesystem=host",
-	"--filesystem=/tmp/"
+	"--filesystem=/tmp/",
+	"--filesystem=/var/tmp"
     ],
     "modules": [
 	{
@@ -67,7 +69,6 @@
 	      }
 	  ]
 	},
-		
 	{
 	    "name": "openssh",
 	    "buildsystem" : "autotools",
@@ -79,7 +80,7 @@
 		  "sha256": "a323caeeddfe145baaa0db16e98d784b1fbc7dd436a6bf1f479dfd5cd1d21723"
 	      }
 	  ]
-	},	
+	},
 	{
 	    "name": "git",
 	    "buildsystem" : "autotools",
@@ -101,15 +102,21 @@
 			    "--with-xwidgets", "--with-modules", "--prefix=/app"],
 	    "make-args": ["RUN_TEMACS= setarch `arch` -R ./temacs"],
 	    "sources": [
-		{
-		    "type": "git",
-		    "tag": "emacs-26.0.91",
-		    "commit": "752fba992b793a74d202c9cfc3e1a92fd458e748",
-		    "url": "git://git.sv.gnu.org/emacs.git"
+	{
+                    "type": "archive",
+                    "url": "http://www.nic.funet.fi/pub/gnu/ftp.gnu.org/pub/gnu/emacs/emacs-26.1.tar.xz",
+                    "sha256": "1cf4fc240cd77c25309d15e18593789c8dbfba5c2b44d8f77c886542300fd32c"
+                },
+                {
+                    "type": "patch",
+                    "path": "appdata-releases.patch"
 		}
+	    ],
+            "cleanup": [
+                "/share/icons/hicolor/scalable/mimetypes/emacs-document.svg",
+                "/share/icons/hicolor/scalable/mimetypes/emacs-document23.svg"
 	    ]
 	},
-
 	{
 	    "name": "mu",
 	    "buildsystem": "autotools",
